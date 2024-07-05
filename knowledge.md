@@ -11,12 +11,22 @@
 - Multiple fonts
 - Local fonts
 - Tailwind fonts
+  ```ts
+  theme: {
+    extend: {
+      fontFamily: {
+        primary: ["var(--font-manrope)"],
+        secondary: ["var(--font-roboto)"],
+      },
+    },
+  },
+  ```
 
 ## Hướng dẫn
 
 - Import
-`import { Manrope, Roboto } from "next/font/google";`
+  `import { Manrope, Roboto } from "next/font/google";`
 
 - Khai báo
-`const manrope = Manrope({ subsets: ["latin"] });
+  `const manrope = Manrope({ subsets: ["latin"] });
 const roboto = Roboto({subsets: ["latin"], weight: "400"})`

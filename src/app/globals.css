@@ -2,15 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: var(--font-manrope);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-roboto);
+:root {
+  --font-manrope: "Manrope", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-inter: "Inter", sans-serif;
 }
