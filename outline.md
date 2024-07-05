@@ -1,0 +1,14 @@
+# Công nghệ
+- Nextjs14
+- Typescript
+- TailwindCSS
+- Shadcn
+- Zustand
+- React hook form
+- Zod
+- Lodash
+- Mongoose - Mongodb
+- Clerk
+- Webhook
+- Vercel
+- Git github
