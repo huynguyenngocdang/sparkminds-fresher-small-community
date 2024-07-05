@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { inter, manrope, roboto } from "@/components/fonts";
+
+import Sidebar from "@/components/layout/Sidebar";
+import { manrope } from "@/utils";
 
 export const metadata: Metadata = {
-  title: "Ucademy",
+  title: "Sparkademy",
   description: "Nền tảng học lập trình trực tuyến",
 };
 
@@ -14,14 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`
-          ${roboto.variable} 
-          ${inter.variable} 
-          ${manrope.variable} 
-          font-primary`}
-      >
-        {children}
+      <body className={manrope.className}>
+        <div className="wrapper grid grid-cols-[300px,minmax(0,1fr)] h-screen">
+          <Sidebar />
+          <main>{children}</main>
+        </div>
       </body>
     </html>
   );
