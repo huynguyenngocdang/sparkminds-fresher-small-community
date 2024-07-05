@@ -3,6 +3,7 @@ import "./globals.css";
 
 import Sidebar from "@/components/layout/Sidebar";
 import { manrope } from "@/utils";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Sparkademy",
@@ -15,13 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body className={manrope.className}>
-        <div className="wrapper grid grid-cols-[300px,minmax(0,1fr)] h-screen">
-          <Sidebar />
-          <main>{children}</main>
-        </div>
+        {children}
       </body>
     </html>
+    </ClerkProvider>
+
   );
 }
