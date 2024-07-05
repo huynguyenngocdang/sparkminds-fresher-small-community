@@ -99,6 +99,7 @@ sử dụng
     </Link>
 ```
 
+- chỉ có thể async ở page và layout. Không async được component
 
 # Error
 

@@ -1,5 +1,6 @@
-import Image from "next/image";
+import { connectToDatabase } from "@/lib/mongoose";
 
-export default function Home() {
+export default async function Home() {
+  const connect = connectToDatabase();
   return <div>Homepage</div>;
 }
