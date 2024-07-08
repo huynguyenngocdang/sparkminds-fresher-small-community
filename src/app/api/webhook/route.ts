@@ -10,6 +10,9 @@ export async function POST(req: Request) {
   if (!process.env.WEBHOOK_SECRET) {
     throw new Error("WEBHOOK_SECRET is not set");
   }
+  if (!svix_id || !svix_timestamp || !svix_signature) {
+    return new Response("Bad Request", { status: 400 });
+  }
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
@@ -32,6 +35,7 @@ export async function POST(req: Request) {
     console.log("msg data " + msg.data);
     const { id, username, email_addresses, image_url, first_name, last_name } =
       msg.data;
+
     const user = await createUser({
       clerkId: id,
       username: username!,
@@ -39,6 +43,7 @@ export async function POST(req: Request) {
       name: first_name + " " + last_name,
       avatar: image_url,
     });
+
     return NextResponse.json({
       message: "User created successfully",
       user,
