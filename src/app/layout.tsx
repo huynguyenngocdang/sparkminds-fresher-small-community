@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import Sidebar from "@/components/layout/Sidebar";
 import { manrope } from "@/utils";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "@/components/common/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Sparkademy",
@@ -17,12 +17,18 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <body className={manrope.className}>
-        {children}
-      </body>
-    </html>
+      <html lang="en">
+        <body className={manrope.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
     </ClerkProvider>
-
   );
 }
