@@ -159,6 +159,8 @@ images: {
     ],
   },
 ```
+- `priority` thiết lập khi cần hình load trước
+Cài thêm npm i sharp khi lên production để hình load nhanh hơn
 
 # Mongoose
 

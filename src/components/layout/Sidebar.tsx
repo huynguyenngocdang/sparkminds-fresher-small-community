@@ -6,7 +6,7 @@ import { TMenuItem } from "@/types";
 
 const Sidebar = () => {
   return (
-    <div className="p-5 border-r border-r-gray-200">
+    <div className="p-5 border-r border-r-gray-200 bg-white">
       <a href="/" className="font-bold text-3xl inline-block mb-5">
         <span className="text-secondary">Spark</span>
         ademy
@@ -27,11 +27,7 @@ const Sidebar = () => {
   );
 };
 
-function MenuItem({
-  url = "/",
-  title = "",
-  icon,
-}: TMenuItem) {
+function MenuItem({ url = "/", title = "", icon }: TMenuItem) {
   return (
     <li>
       <ActiveLink url={url}>
