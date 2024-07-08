@@ -1,11 +1,12 @@
-import React from 'react'
+import Heading from "@/components/Typography/Heading";
+import React from "react";
 
 const page = () => {
   return (
     <div>
-      Quản lý thành viên
+      <Heading>Quản lý thành viên</Heading>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
