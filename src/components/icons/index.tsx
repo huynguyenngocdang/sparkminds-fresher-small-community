@@ -9,3 +9,4 @@ export { default as IconRight } from "./IconRight";
 export { default as IconStar } from "./IconStar";
 export { default as IconStudy } from "./IconStudy";
 export { default as IconUsers } from "./IconUsers";
+export { default as IconPlay } from "./IconPlay";
