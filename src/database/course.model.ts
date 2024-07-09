@@ -11,8 +11,7 @@ export interface ICourse extends Document {
   price: number;
   sale_price: number;
   status: ECourseStatus;
-  created_at: Date;
-  author: Schema.Types.ObjectId;
+
   level: ECourseLevel;
   views: number;
   rating: number[];
@@ -25,8 +24,10 @@ export interface ICourse extends Document {
     }[];
   };
   lectures: Schema.Types.ObjectId[];
+  created_at: Date;
   _destroy: boolean;
   order: number;
+  author: Schema.Types.ObjectId;
 }
 
 const courseSchema = new Schema<ICourse>({
@@ -40,18 +41,23 @@ const courseSchema = new Schema<ICourse>({
   },
   image: {
     type: String,
+    default: "",
   },
   intro_url: {
     type: String,
+    default: "",
   },
   desc: {
     type: String,
+    default: "",
   },
   price: {
     type: Number,
+    default: 0,
   },
   sale_price: {
     type: Number,
+    default: 0,
   },
   status: {
     type: String,

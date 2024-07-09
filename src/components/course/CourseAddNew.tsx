@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -14,17 +14,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { title } from "process";
+import { useEffect, useState } from "react";
 import slugify from "slugify";
+import { createCourse } from "@/lib/actions/course.actions";
+import { toast } from "react-toastify";
+import { createCourseFail, createCourseSuccess } from "@/constants";
+import { useRouter } from "next/navigation";
+import { IUser } from "@/database/user.model";
+import { auth } from "@clerk/nextjs/server";
 
 const formSchema = z.object({
   title: z.string().min(10, "Tên khóa học phải có ít nhất 10 kí tự"),
   slug: z.string().optional(),
 });
 
-function CourseAddNew() {
-  // 1. Define your form.
+function CourseAddNew({user} : {user: IUser}) {
+  const router = useRouter();
   const [isSubmitting, setisSubmitting] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,8 +39,20 @@ function CourseAddNew() {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const titleValue = useWatch({
+    control: form.control,
+    name: "title",
+  });
+
+  useEffect(() => {
+    const slug = slugify(titleValue || "", {
+      lower: true,
+      locale: "vi",
+    });
+    form.setValue("slug", slug);
+  }, [titleValue, form]);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setisSubmitting(true);
       const data = {
@@ -46,11 +63,20 @@ function CourseAddNew() {
             lower: true,
             locale: "vi",
           }),
+        author: user._id,
       };
-      console.log(data);
-      // Call your API here.
+      const res = await createCourse(data);
+      if (!res?.sucess) {
+        toast.error(res?.message);
+        return;
+      }
+        toast.success(createCourseSuccess);
+      if(res?.data) {
+        router.push(`/manage/course/update?slug=${res.data.slug}`)
+      }
     } catch (error) {
       console.error(error);
+      toast.error(createCourseFail);
     } finally {
       setisSubmitting(false);
     }
@@ -59,7 +85,7 @@ function CourseAddNew() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
-        <div className="grid grid-cols-2 gap-8 mt-10 mb-8 sm:flex sm:flex-col sm:gap-8">
+        <div className="flex flex-col gap-8 mt-10 mb-8">
           <FormField
             control={form.control}
             name="title"

@@ -9,6 +9,7 @@ import {
 
 import { TMenuItem } from "@/types";
 import React from "react";
+import { createCourse } from '@/lib/actions/course.actions';
 
 export const menuItems: TMenuItem[] = [
   {
@@ -42,3 +43,6 @@ export const menuItems: TMenuItem[] = [
     icon: <IconComment className="size-5" />,
   },
 ];
+
+export const createCourseSuccess: string = "Tạo khóa học thành công";
+export const createCourseFail: string = "Tạo khóa học thất bại";
