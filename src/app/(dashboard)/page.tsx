@@ -5,16 +5,16 @@ import { getAllCourses } from "@/lib/actions/course.actions";
 import React from "react";
 
 const page = async () => {
-  const courses = await getAllCourses() || [];
-
+  const courses = (await getAllCourses()) || [];
 
   return (
     <div>
       <Heading>Khám phá</Heading>
       <CourseGrid>
-        {courses?.length > 0 && courses.map((course) => (
-          <CourseItem key={course.slug} data={course} />
-        ))}
+        {courses?.length > 0 &&
+          courses.map((course) => (
+            <CourseItem key={course.slug} data={course} />
+          ))}
       </CourseGrid>
     </div>
   );
