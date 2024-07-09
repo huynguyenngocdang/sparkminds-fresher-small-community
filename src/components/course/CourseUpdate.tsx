@@ -16,22 +16,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import slugify from "slugify";
-import { createCourse } from "@/lib/actions/course.actions";
+import { updateCourse } from "@/lib/actions/course.actions";
 import { toast } from "react-toastify";
-import { createCourseFail, createCourseSuccess } from "@/constants";
+import { createCourseFail, createCourseSuccess, updateCourseFail } from "@/constants";
 import { useRouter } from "next/navigation";
-import { IUser } from "@/database/user.model";
 import { Textarea } from "../ui/textarea";
 import { ECourseLevel, ECourseStatus } from "@/types/enums";
+import { ICourse } from "@/database/course.model";
 
 const formSchema = z.object({
   title: z.string().min(10, "Tên khóa học phải có ít nhất 10 kí tự"),
   slug: z.string().optional(),
   image: z.string().optional(),
-  intro_url: z.string().url().optional(),
+  intro_url: z.string().optional(),
   desc: z.string().optional(),
-  price: z.number().int().positive().optional(),
-  sale_price: z.number().int().positive().optional(),
+  price: z.number().int().min(0).optional(),
+  sale_price: z.number().int().min(0).optional(),
   status: z
     .enum([
       ECourseStatus.APPROVED,
@@ -60,21 +60,21 @@ const formSchema = z.object({
   }),
 });
 
-const CourseUpdate = () => {
+const CourseUpdate = ({ data }: { data: ICourse }) => {
   const router = useRouter();
   const [isSubmitting, setisSubmitting] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      slug: "",
-      price: 0,
-      sale_price: 0,
-      intro_url: "",
-      desc: "",
-      image: "",
-      status: ECourseStatus.PENDING,
-      level: ECourseLevel.BEGINNER,
+      title: data.title,
+      slug: data.slug,
+      price: data.price,
+      sale_price: data.sale_price,
+      intro_url: data.intro_url,
+      desc: data.desc,
+      image: data.image,
+      status: data.status,
+      level: data.level,
       info: {
         requirements: [],
         benefits: [],
@@ -83,24 +83,29 @@ const CourseUpdate = () => {
     },
   });
 
-  const titleValue = useWatch({
-    control: form.control,
-    name: "title",
-  });
-
-  useEffect(() => {
-    const slug = slugify(titleValue || "", {
-      lower: true,
-      locale: "vi",
-    });
-    form.setValue("slug", slug);
-  }, [titleValue, form]);
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      setisSubmitting(true);
+      const res = await updateCourse({
+        slug: data.slug,
+        updateData: {
+          title: values.title,
+          slug: values.slug,
+          price: values.price,
+          sale_price: values.sale_price,
+          intro_url: values.intro_url,
+          desc: values.desc,
+        },
+      });
+      if (values.slug) {
+        router.replace(`/manage/course/update?slug=${values.slug}`);
+      }
+      if(res?.sucess) {
+        toast.success(res.message);
+      }
     } catch (error) {
       console.error(error);
-      toast.error(createCourseFail);
+      toast.error(updateCourseFail);
     } finally {
       setisSubmitting(false);
     }
@@ -142,7 +147,12 @@ const CourseUpdate = () => {
               <FormItem>
                 <FormLabel>Giá khuyến mãi</FormLabel>
                 <FormControl>
-                  <Input placeholder="599.000" {...field} />
+                  <Input
+                    placeholder="599.000"
+                    {...field}
+                    type="number"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -155,7 +165,12 @@ const CourseUpdate = () => {
               <FormItem>
                 <FormLabel>Giá gốc</FormLabel>
                 <FormControl>
-                  <Input placeholder="999.000" {...field} />
+                  <Input
+                    placeholder="999.000"
+                    {...field}
+                    type="number"
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

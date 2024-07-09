@@ -10,6 +10,7 @@ import {
 import { TMenuItem } from "@/types";
 import React from "react";
 import { createCourse } from '@/lib/actions/course.actions';
+import exp from "constants";
 
 export const menuItems: TMenuItem[] = [
   {
@@ -46,3 +47,5 @@ export const menuItems: TMenuItem[] = [
 
 export const createCourseSuccess: string = "Tạo khóa học thành công";
 export const createCourseFail: string = "Tạo khóa học thất bại";
+export const updateCourseSuccess: string = "Cập nhật khóa học thành công";
+export const updateCourseFail: string = "Cập nhật khóa học thất bại";
