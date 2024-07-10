@@ -1,6 +1,8 @@
-import { IconPlay, IconStudy, IconUsers } from "@/components/icons";
+import { IconCheck, IconPlay, IconStudy, IconUsers } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { courseLevelLabel } from "@/constants";
 import { getCourseBySlug } from "@/lib/actions/course.actions";
+import { ECourseStatus } from "@/types/enums";
 import Image from "next/image";
 import React from "react";
 
@@ -14,8 +16,8 @@ const page = async ({
   const data = await getCourseBySlug({
     slug: params.slug,
   });
-  console.log("🚀 ~ data:", data);
   if (!data) return <div>Khóa học không tồn tại</div>;
+  if (data.status !== ECourseStatus.APPROVED) return <div>Khóa học chưa được duyệt</div>;
   const videoIdPart = data.intro_url?.split("v=")[1];
   const videoId = videoIdPart ? videoIdPart.split("&")[0] : "";
   return (
@@ -35,7 +37,7 @@ const page = async ({
             </>
           ) : (
             <Image
-              src="https://images.unsplash.com/photo-1667372393086-9d4001d51cf1?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src={data.image || "https://images.unsplash.com/photo-1667372393086-9d4001d51cf1?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
               alt=""
               fill
               className="w-full h-full object-cover rounded-lg"
@@ -48,21 +50,25 @@ const page = async ({
           <div className="grid grid-cols-4 gap-5 mb-10">
             <BoxInfo title="Bài học">100</BoxInfo>
             <BoxInfo title="Lượt xem">{data.views}</BoxInfo>
-            <BoxInfo title="Trình độ">{data.level}</BoxInfo>
+            <BoxInfo title="Trình độ">
+              {courseLevelLabel[data.level]}
+              </BoxInfo>
             <BoxInfo title="Thời lượng học">100h45p</BoxInfo>
           </div>
         </BoxSection>
         <BoxSection title="Yêu cầu">
           {data.info.requirements.map((item, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <span className="text-primary">•</span>
+            <div key={index} className="flex items-center mb-3 gap-2">
+              <span className="text-primary">
+                <IconCheck className="size-4" />
+              </span>
               <span>{item}</span>
             </div>
           ))}
         </BoxSection>
         <BoxSection title="Lợi ích">
           {data.info.benefits.map((item, index) => (
-            <div key={index} className="flex items-center gap-2">
+            <div key={index} className="flex items-center mb-3 gap-2">
               <span className="text-primary">•</span>
               <span>{item}</span>
             </div>
