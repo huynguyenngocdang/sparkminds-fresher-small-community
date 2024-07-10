@@ -28,7 +28,7 @@ const formSchema = z.object({
   slug: z.string().optional(),
 });
 
-function CourseAddNew({user} : {user: IUser}) {
+function CourseAddNew({ user }: { user: IUser }) {
   const router = useRouter();
   const [isSubmitting, setisSubmitting] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,13 +66,13 @@ function CourseAddNew({user} : {user: IUser}) {
         author: user._id,
       };
       const res = await createCourse(data);
-      if (!res?.sucess) {
+      if (!res?.success) {
         toast.error(res?.message);
         return;
       }
-        toast.success(createCourseSuccess);
-      if(res?.data) {
-        router.push(`/manage/course/update?slug=${res.data.slug}`)
+      toast.success(createCourseSuccess);
+      if (res?.data) {
+        router.push(`/manage/course/update?slug=${res.data.slug}`);
       }
     } catch (error) {
       console.error(error);

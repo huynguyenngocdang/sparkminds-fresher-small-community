@@ -15,7 +15,11 @@ export async function getAllCourses(): Promise<ICourse[] | undefined> {
   }
 }
 
-export async function getCourseBySlug({ slug }: { slug: string }): Promise<ICourse | undefined>{
+export async function getCourseBySlug({
+  slug,
+}: {
+  slug: string;
+}): Promise<ICourse | undefined> {
   try {
     connectToDatabase();
     const res = await Course.findOne({ slug });
@@ -31,13 +35,13 @@ export async function createCourse(params: TCreateCourseParams) {
     const existCourse = await Course.findOne({ slug: params.slug });
     if (existCourse) {
       return {
-        sucess: false,
+        success: false,
         message: "Đường dẫn khóa học đã tồn tại",
       };
     }
     const res = await Course.create(params);
     return {
-      sucess: true,
+      success: true,
       data: JSON.parse(JSON.stringify(res)),
     };
   } catch (error) {
@@ -53,12 +57,15 @@ export async function updateCourse(params: TUpdateCourseParams) {
     await Course.findOneAndUpdate({ slug: params.slug }, params.updateData, {
       new: true,
     });
-    revalidatePath("/");
-    return{
-      sucess: true,
+    revalidatePath(params.path || "/");
+    return {
+      success: true,
       message: updateCourseSuccess,
-    }
+    };
   } catch (error) {
     console.log(error);
+    return {
+      success: false,
+    };
   }
 }

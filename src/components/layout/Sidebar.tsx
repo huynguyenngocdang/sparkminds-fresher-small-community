@@ -14,8 +14,8 @@ const Sidebar = () => {
   const { userId } = useAuth();
   return (
     <div
-      className="hidden p-5 border-r border-r-gray-200 dark:border-opacity-10 bg-white dark:bg-grayDarker lg:flex flex-col
-    lg:fixed lg:top-0 lg:left-0 lg:bottom-0 lg:w-[300px]"
+      className="hidden p-5 border-r bgDarkMode borderDarkMode
+      lg:flex flex-col lg:fixed lg:top-0 lg:left-0 lg:bottom-0 lg:w-[300px]"
     >
       <a href="/" className="font-bold text-3xl inline-block mb-5">
         <span className="text-secondary">Spark</span>

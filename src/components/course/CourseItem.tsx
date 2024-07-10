@@ -7,7 +7,7 @@ import { ICourse } from "@/database/course.model";
 const CourseItem = ({ data }: { data: ICourse }) => {
   const courseInfo = [
     {
-      title: data.views,
+      title: data.views.toLocaleString(),
       icon: (className?: string) => <IconEye className={className}></IconEye>,
     },
     {
@@ -25,13 +25,12 @@ const CourseItem = ({ data }: { data: ICourse }) => {
     <div className="bg-white border border-gray-200 dark:bg-grayDarker dark:text-grayFont p-4 rounded-2xl">
       <Link href={`/course/${data.slug}`} className="block h-[180px] relative">
         <Image
-          src={data.image || "https://images.unsplash.com/photo-1667372393086-9d4001d51cf1?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+          src={data.image || "/placeholder.png"}
           alt=""
           width={600}
           height={400}
-          //   fill
-          className="w-full h-full object-cover rounded-lg"
-          sizes="@media (min-width: 640px) 300px, 100vw"
+          className="w-full h-full object-scale-down rounded-lg"
+          sizes="@media (min-width: 640px) 300px, 100vh"
           priority
         />
         {/* <span className="inline-block px-3 py-1 rounded-full absolute top-3 right-3 z-10 text-white font-medium bg-green-500 text-xs">
@@ -48,7 +47,7 @@ const CourseItem = ({ data }: { data: ICourse }) => {
             </div>
           ))}
           <span className="font-semibold text-secondary text-base ml-auto">
-            {data.price === 0 ? "Miễn phí" : `${data.price}đ`}
+            {data.price === 0 ? "Miễn phí" : `${data.price.toLocaleString("vi-VI")}đ`}
           </span>
         </div>
       </div>
