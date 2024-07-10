@@ -1,3 +1,22 @@
 {
-  "window.zoomLevel": -0.5
+  "window.zoomLevel": -0.5,
+  "tailwindCSS.experimental.classRegex": [
+    "cn\\(([\")]*)\\)",
+    "clsx\\(([\")]*)\\)",
+    "className\\:\\s*\"([^\"]*)\"",
+    "classNames\\:\\s*\"([^\"]*)\"",
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    [
+      "(?:\\b(?:const|let|var)\\s+)?[\\w$_]*(?:[Ss]tyles|[Cc]lasses|[Cc]lassnames)[\\w\\d]*\\s*(?:=|\\+=)\\s*['\"]([^'\"]*)['\"]"
+    ],
+    ["Styles\\s*(?::\\s*[^=]+)?\\s*=\\s*([^;]*);", "['\"`]([^'\"`]*)['\"`]"]
+  ],
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    ".*Class",
+    ".*ClassName",
+    ".*ClassNames"
+  ]
 }

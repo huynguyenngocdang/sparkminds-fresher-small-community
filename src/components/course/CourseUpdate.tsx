@@ -34,7 +34,6 @@ import {
 import { UploadButton } from "@/utils/uploadthing";
 import Image from "next/image";
 
-
 const formSchema = z.object({
   title: z.string().min(10, "Tên khóa học phải có ít nhất 10 kí tự"),
   slug: z.string().optional(),
@@ -102,7 +101,6 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    
     try {
       setisSubmitting(true);
       const res = await updateCourse({
@@ -124,10 +122,10 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
           },
         },
       });
-      if (values.slug) {
+      if (values.slug !== data.slug) {
         router.replace(`/manage/course/update?slug=${values.slug}`);
       }
-      if (res?.sucess) {
+      if (res?.success) {
         toast.success(res.message);
       }
     } catch (error) {
@@ -232,31 +230,34 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                     <div className="h-[200px] bg-white rounded-md border border-gray-200 flex items-center justify-center relative">
                       {!imageWatch ? (
                         <Image
-                          src={data.image}
+                          src={data.image || "/placeholder.png"}
                           alt="image"
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="w-full h-full object-cover"
+                          width={500}
+                          height={200}                          
+                          sizes="@media (min-width: 640px) 300px, 100vh"
+                          className="w-full h-full object-scale-down rounded-lg"
+                          priority
                         />
                       ) : (
                         <Image
                           src={imageWatch}
                           alt="image"
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"   
-                          className="w-full h-full object-cover"
+                          width={500}
+                          height={200}                          
+                          sizes="@media (min-width: 640px) 300px, 100vh"
+                          className="w-full h-full object-scale-down rounded-lg"
                         />
                       )}
                     </div>
                     <UploadButton
-                          endpoint="imageUploader"
-                          onClientUploadComplete={(res) => {
-                            form.setValue("image", res[0].url);
-                          }}
-                          onUploadError={(error: Error) => {
-                            console.error(`ERROR! ${error.message}`);
-                          }}
-                        />
+                      endpoint="imageUploader"
+                      onClientUploadComplete={(res) => {
+                        form.setValue("image", res[0].url);
+                      }}
+                      onUploadError={(error: Error) => {
+                        console.error(`ERROR! ${error.message}`);
+                      }}
+                    />
                   </>
                 </FormControl>
                 <FormMessage />
@@ -304,8 +305,8 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                       <SelectValue placeholder="Trạng thái" />
                     </SelectTrigger>
                     <SelectContent>
-                      {courseStatus.map((item) => (
-                        <SelectItem key={item.value} value={item.value}>
+                      {courseStatus.map((item, index) => (
+                        <SelectItem key={index} value={item.value}>
                           {item.title}
                         </SelectItem>
                       ))}
@@ -331,8 +332,8 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                       <SelectValue placeholder="Trình độ" />
                     </SelectTrigger>
                     <SelectContent>
-                      {courseLevel.map((item) => (
-                        <SelectItem key={item.value} value={item.value}>
+                      {courseLevel.map((item, index) => (
+                        <SelectItem key={index} value={item.value}>
                           {item.title}
                         </SelectItem>
                       ))}
@@ -448,7 +449,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                     {courseInfo.qa.map((item, index) => (
                       <div className="grid grid-cols-2" key={index}>
                         <Input
-                          key={index}
+                          
                           placeholder={`Câu hỏi số ${index + 1}`}
                           value={item.question}
                           onChange={(e) => {
@@ -458,7 +459,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                           }}
                         />
                         <Input
-                          key={index}
+                          
                           placeholder={`Câu trả lời số ${index + 1}`}
                           value={item.answer}
                           onChange={(e) => {

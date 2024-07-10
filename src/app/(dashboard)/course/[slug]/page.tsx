@@ -37,10 +37,10 @@ const page = async ({
             </>
           ) : (
             <Image
-              src={data.image || "https://images.unsplash.com/photo-1667372393086-9d4001d51cf1?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+              src={data.image || "/placeholder.png"}
               alt=""
               fill
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-scale-down rounded-lg"
             />
           )}
         </div>
